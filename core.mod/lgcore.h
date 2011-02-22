@@ -60,7 +60,7 @@ extern "C" {
 	\endcode
 **/
 #ifndef BMX_TABLE_SUPPORT
-#	define BMX_TABLE_SUPPORT 0
+#	define BMX_TABLE_SUPPORT 1
 #endif
 
 
