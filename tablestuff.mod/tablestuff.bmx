@@ -35,7 +35,7 @@ Type TLuaFunction
 	Rem
 	bbdoc: Create a TLuafunction which references a lua method of the given obj:name.
 	EndRem
-	Function CreateFromObject:TLuaFunction(obj:Object, name:String)
+	Function CreateFromObject:TLuaFunction(l:Byte Ptr, obj:Object, name:String)
 		lua_pushbmaxobject(l, obj)
 		lua_pushstring(l, name)
 		lua_getfenv(l, 1)
