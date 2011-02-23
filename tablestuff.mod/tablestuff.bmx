@@ -91,8 +91,9 @@ End Type
 Rem
 bbdoc: Fetch and call a Lua method of obj.
 EndRem
-Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Object[])
+Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Object[] = Null)
 	Local ret:Object[]
+	If Not (l) Return Null
 	lua_pushbmaxobject(l, obj)
 	lua_pushstring(l, name)
 	lua_getfenv(l, 1)
@@ -164,6 +165,7 @@ rem
 bbdoc: Calls the lua function at the top of the stack, pass some paremeters, get some return values.
 endrem
 Function lua_callfunc:Object[] (l:Byte Ptr, args:Object[] = Null)
+	If Not (l) Return Null
 	Local prevtop:Int = lua_gettop(l)
 	If args = Null
 		If lua_pcall(l, 0, LUA_MULTRET, 0) <> 0
