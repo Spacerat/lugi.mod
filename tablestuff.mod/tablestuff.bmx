@@ -169,7 +169,7 @@ Function lua_callfunc:Object[] (l:Byte Ptr, args:Object[] = Null)
 	Local prevtop:Int = lua_gettop(l)
 	If args = Null
 		If lua_pcall(l, 0, LUA_MULTRET, 0) <> 0
-			Print "Lua warnning: " + lua_tostring(L, - 1)
+			Print "Lua warning: " + lua_tostring(L, - 1)
 		End If
 	Else
 		Local nargs:Int = 0
@@ -183,7 +183,7 @@ Function lua_callfunc:Object[] (l:Byte Ptr, args:Object[] = Null)
 			nargs:+1
 		Next
 		If lua_pcall(l, nargs, LUA_MULTRET, 0) <> 0
-			Print "Lua warnning: " + lua_tostring(L, - 1)
+			Print "Lua warning: " + lua_tostring(L, - 1)
 		End If
 	EndIf
 	If lua_gettop(l) = 1
