@@ -38,12 +38,12 @@ Type TLuaFunction
 	Function CreateFromObject:TLuaFunction(l:Byte Ptr, obj:Object, name:String)
 		lua_pushbmaxobject(l, obj)
 		lua_pushstring(l, name)
-		lua_getfenv(l, 1)
-		lua_pushvalue(l, 2)
+		lua_getfenv(l, - 2)
+		lua_pushvalue(l, - 2)
 		lua_gettable(l, - 2)
 		If lua_type(l, - 1) = LUA_TFUNCTION
 			Local ret:TLuaFunction = TLuaFunction.Create(l, - 1)
-			lua_settop(l, 0)
+			lua_pop(l, 4)
 			Return ret
 		EndIf
 	End Function
@@ -96,8 +96,8 @@ Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Obj
 	If Not (l) Return Null
 	lua_pushbmaxobject(l, obj)
 	lua_pushstring(l, name)
-	lua_getfenv(l, 1)
-	lua_pushvalue(l, 2)
+	lua_getfenv(l, - 2)
+	lua_pushvalue(l, - 2)
 	lua_gettable(l, - 2)
 	If lua_type(l, - 1) = LUA_TFUNCTION
 		
@@ -115,7 +115,7 @@ Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Obj
 
 		ret = lua_callfunc(l, args)
 	EndIf
-	lua_settop(l, 0)
+	lua_pop(l, 4)
 	Return ret
 EndFunction
 
@@ -126,11 +126,11 @@ Function GetLuaField:Object(l:Byte Ptr, obj:Object, name:String)
 	Local ret:Object
 	lua_pushbmaxobject(l, obj)
 	lua_pushstring(l, name)
-	lua_getfenv(l, 1)
-	lua_pushvalue(l, 2)
+	lua_getfenv(l, - 2)
+	lua_pushvalue(l, - 2)
 	lua_gettable(l, - 2)
 	ret = lua_toobject(l, - 1)
-	lua_settop(l, 0)
+	lua_pop(l, 4)
 	Return ret
 End Function
 
