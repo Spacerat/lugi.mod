@@ -45,6 +45,8 @@ Type TLuaFunction
 			Local ret:TLuaFunction = TLuaFunction.Create(l, - 1)
 			lua_pop(l, 4)
 			Return ret
+		Else
+			lua_pop(l, 4)
 		EndIf
 	End Function
 	
@@ -95,10 +97,10 @@ Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Obj
 	Local ret:Object[]
 	If Not (l) Return Null
 	lua_pushbmaxobject(l, obj)
-	lua_pushstring(l, name)
-	lua_getfenv(l, - 2)
-	lua_pushvalue(l, - 2)
-	lua_gettable(l, - 2)
+	lua_pushstring(l, name) '-2=obj -1=name
+	lua_getfenv(l, - 2)		'-3=obj -2=name -1=fenv
+	lua_pushvalue(l, - 2)	'-4=obj -3=name -2=fenv -1=name
+	lua_gettable(l, - 2)	'-4=obj -3=name -2=fenv -1=value
 	If lua_type(l, - 1) = LUA_TFUNCTION
 		
 		Local args:Object[]
@@ -114,8 +116,10 @@ Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Obj
 		EndIf
 
 		ret = lua_callfunc(l, args)
+		lua_pop(l, 3)
+	Else
+		lua_pop(l, 4)
 	EndIf
-	lua_pop(l, 4)
 	Return ret
 EndFunction
 
