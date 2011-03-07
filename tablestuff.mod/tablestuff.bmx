@@ -124,7 +124,7 @@ Function CallLuaMethod:Object[] (l:Byte Ptr, obj:Object, name:String, params:Obj
 EndFunction
 
 Rem
-bbdoc: 
+bbdoc: Get the value of a lua-created field from an object.
 EndRem
 Function GetLuaField:Object(l:Byte Ptr, obj:Object, name:String)
 	Local ret:Object
@@ -137,6 +137,15 @@ Function GetLuaField:Object(l:Byte Ptr, obj:Object, name:String)
 	lua_pop(l, 4)
 	Return ret
 End Function
+
+Function SetLuaFieldObject(l:Byte Ptr, obj:Object, name:String, value:Object)
+	lua_pushbmaxobject(l, obj)
+	lua_getfenv(l, -1)
+	lua_pushstring(l, name)
+	lua_pushbmaxobject(l, value)
+	lua_settable(l, -3)
+	lua_pop(l, 2)
+EndFunction
 
 Rem
 bbdoc: Create a TLuaFunction which references a Lua function at position i on the stack.
@@ -165,7 +174,7 @@ Function lua_toobject:Object(l:Byte Ptr, i:Int)
 	End Select
 End Function
 
-rem
+Rem
 bbdoc: Calls the lua function at the top of the stack, pass some paremeters, get some return values.
 endrem
 Function lua_callfunc:Object[] (l:Byte Ptr, args:Object[] = Null)
